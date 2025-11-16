@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin the Wheel - Create Your Wheel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .names-container {
+            margin-bottom: 20px;
+        }
+        .name-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .remove-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .remove-btn:hover {
+            background: #ee3344;
+        }
+        .add-btn {
+            background: #2ed573;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+        .add-btn:hover {
+            background: #26d467;
+        }
+        .create-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+        .create-btn:hover {
+            transform: translateY(-2px);
+        }
+        .admin-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .admin-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .admin-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎡 Spin the Wheel</h1>
+        <p>Add names and create your custom spinning wheel!</p>
+        
+        <form method="POST" id="wheelForm">
+            <div class="names-container" id="namesContainer">
+                {% for name in default_names %}
+                <div class="name-input-group">
+                    <input type="text" name="names[]" value="{{ name }}" placeholder="Enter name" required>
+                    <button type="button" class="remove-btn" onclick="removeName(this)">✕</button>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <button type="button" class="add-btn" onclick="addName()">+ Add Name</button>
+            <button type="submit" class="create-btn">Create Wheel 🎯</button>
+        </form>
+        
+        <div class="admin-link">
+            <a href="{{ url_for('admin') }}">Admin Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        function addName() {
+            const container = document.getElementById('namesContainer');
+            const div = document.createElement('div');
+            div.className = 'name-input-group';
+            div.innerHTML = `
+                <input type="text" name="names[]" placeholder="Enter name" required>
+                <button type="button" class="remove-btn" onclick="removeName(this)">✕</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeName(btn) {
+            const container = document.getElementById('namesContainer');
+            if (container.children.length > 2) {
+                btn.parentElement.remove();
+            } else {
+                alert('You need at least 2 names!');
+            }
+        }
+    </script>
+</body>
+</html>

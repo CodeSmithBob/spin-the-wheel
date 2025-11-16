@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spin the Wheel!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/zarocknz/javascript-winwheel@2.8.0/Winwheel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(135deg, #f9a825 0%, #0288d1 100%);
+            min-height: 100vh;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .url-box {
+            background: rgba(255,255,255,0.95);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .url-box h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 1.1em;
+        }
+        .url-display {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .url-text {
+            flex: 1;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        .copy-btn {
+            padding: 10px 20px;
+            background: #2ed573;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .copy-btn:hover {
+            background: #26d467;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .wheel-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-box {
+            padding: 24px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.13);
+            width: 340px;
+        }
+        .wheel-container {
+            position: relative;
+            width: 520px;
+            height: 540px;
+            max-width: 90vw;
+        }
+        #canvas {
+            margin: 24px auto 0 auto;
+            display: block;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            border-radius: 50%;
+            background: radial-gradient(circle, #fffde7 0%, #f9a825 100%);
+            z-index: 1;
+        }
+        .pointer {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 28px solid transparent;
+            border-right: 28px solid transparent;
+            border-top: 60px solid #ff3d00;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+            z-index: 2;
+            pointer-events: none;
+        }
+        button {
+            padding: 10px 28px;
+            background: linear-gradient(90deg, #ff7043 0%, #8e24aa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            transition: box-shadow 0.2s;
+        }
+        button:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+            background: linear-gradient(90deg, #ffd54f 0%, #26c6da 100%);
+        }
+        .winner-box {
+            margin: 24px 0 0 0;
+            font-size: 1.5em;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 2px 8px #0288d1, 0 0 16px #ffd54f;
+            letter-spacing: 2px;
+            min-height: 2em;
+        }
+        input {
+            margin: 7px;
+            padding: 8px;
+            width: 92%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+        .name-input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .remove-btn {
+            margin-left: 8px;
+            padding: 6px 12px;
+            background: #e57373;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .home-link {
+            display: inline-block;
+            margin-top: 18px;
+            color: #fff;
+            font-size: 1em;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 18px;
+            border-radius: 6px;
+        }
+        .home-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="url-box">
+        <h3>🔖 Your Wheel URL (Bookmark this!)</h3>
+        <div class="url-display">
+            <div class="url-text" id="wheelUrl">{{ request.url }}</div>
+            <button class="copy-btn" onclick="copyUrl()">Copy</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="wheel-section">
+            <h2 style="color:#fff; text-shadow:0 2px 8px #0288d1,0 0 16px #ffd54f; font-size:2.2em; margin-bottom:0.2em;">Spin the Wheel!</h2>
+            <div class="wheel-container">
+                <div class="pointer"></div>
+                <canvas id="canvas" width="500" height="500"></canvas>
+            </div>
+            <div>
+                <button onclick="startSpin()" id="spinBtn">Spin! 🎯</button>
+            </div>
+            <div class="winner-box" id="winner_box"></div>
+            <a href="{{ url_for('index') }}" class="home-link">← Create New Wheel</a>
+        </div>
+        
+        <div class="form-box">
+            <h3 style="margin-top:0;">Edit Names</h3>
+            <form method="post" id="names-form">
+                <div id="name-inputs">
+                    {% for name in names %}
+                    <div class="name-input-group">
+                        <input name="names[]" value="{{ name }}" required>
+                        <button type="button" class="remove-btn" onclick="removeName(this)">✕</button>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="button" onclick="addName()" style="width:100%; margin-bottom:10px;">+ Add Name</button>
+                <button type="submit" style="width:100%;">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let wheelNames = {{ names|tojson }};
+        let wheel = null;
+        let wheelSpinning = false;
+        
+        let tickAudio = new Audio('https://soundbible.com/mp3/Button-SoundBible.com-1420500901.mp3');
+        let winAudio = new Audio('https://soundbible.com/mp3/Ta Da-SoundBible.com-1884170640.mp3');
+        
+        tickAudio.load();
+        winAudio.load();
+        tickAudio.volume = 0.1;
+
+        function copyUrl() {
+            const urlText = document.getElementById('wheelUrl').textContent;
+            navigator.clipboard.writeText(urlText).then(() => {
+                const btn = event.target;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+            });
+        }
+
+        function playTick() {
+            try {
+                let sound = tickAudio.cloneNode();
+                sound.volume = 0.1;
+                sound.play().catch(e => console.log('Tick sound blocked:', e));
+            } catch(e) {}
+        }
+        
+        function playWin() {
+            try {
+                winAudio.currentTime = 0;
+                winAudio.play().catch(e => console.log('Win sound blocked:', e));
+            } catch(e) {}
+        }
+
+        function makeWheel(names) {
+            let colors = ['#FFD54F','#F9A825','#0288D1','#26C6DA','#7CB342','#DCE775','#D84315','#FF7043','#8E24AA','#BDBDBD','#5C6BC0'];
+            let textColors = ['#000', '#000', '#fff', '#000', '#000', '#000', '#fff', '#fff', '#fff', '#000', '#fff'];
+            
+            let segments = names.map(function(n, i) {
+                return {
+                    'fillStyle': colors[i % colors.length],
+                    'text': n,
+                    'textFillStyle': textColors[i % textColors.length],
+                    'textFontFamily': 'Arial',
+                    'textFontSize': 20,
+                    'textFontWeight': 'bold',
+                    'textOrientation': 'curved',
+                    'textAlignment': 'outer',
+                    'textDirection': 'normal'
+                };
+            });
+            
+            wheel = new Winwheel({
+                'canvasId': 'canvas',
+                'numSegments': segments.length,
+                'segments': segments,
+                'animation': {
+                    'type': 'spinToStop',
+                    'duration': 6,
+                    'spins': 12,
+                    'callbackFinished': announceWinner,
+                    'callbackSound': playTick,
+                    'soundTrigger': 'pin',
+                    'easing': 'Power3.easeOut',
+                },
+                'pointerAngle': 2,
+                'pins': {
+                    'number': 18,
+                    'fillStyle': '#333',
+                    'outerRadius': 5,
+                },
+                'outerRadius': 240,
+                'innerRadius': 40,
+            });
+        }
+
+        function announceWinner(segment) {
+            wheelSpinning = false;
+            let winnerBox = document.getElementById("winner_box");
+            winnerBox.innerHTML = `<span style='font-size:2em;'>🎉 Winner: <span style='color:#ffd54f;'>${segment.text}</span> 🎉</span>`;
+            document.getElementById("spinBtn").disabled = false;
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#FFD54F','#0288D1','#FF7043','#8E24AA','#7CB342']
+            });
+            playWin();
+        }
+
+        function startSpin() {
+            document.getElementById("winner_box").innerText = "";
+            if (wheelSpinning) return;
+            wheelSpinning = true;
+            document.getElementById("spinBtn").disabled = true;
+            
+            tickAudio.play().then(() => {
+                tickAudio.pause();
+                tickAudio.currentTime = 0;
+            }).catch(e => {});
+            
+            wheel.stopAnimation(false);
+            wheel.rotationAngle = 0;
+            wheel.draw();
+            wheel.startAnimation();
+        }
+
+        function addName() {
+            const container = document.getElementById('name-inputs');
+            const div = document.createElement('div');
+            div.className = 'name-input-group';
+            div.innerHTML = `
+                <input name="names[]" placeholder="Enter name" required>
+                <button type="button" class="remove-btn" onclick="removeName(this)">✕</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeName(btn) {
+            const container = document.getElementById('name-inputs');
+            if (container.children.length > 2) {
+                btn.parentElement.remove();
+            } else {
+                alert('You need at least 2 names!');
+            }
+        }
+
+        makeWheel(wheelNames);
+    </script>
+</body>
+</html>

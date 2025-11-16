@@ -1,0 +1,14 @@
+services:
+  web:
+    build: .
+    container_name: spin-wheel
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - wheel-db:/tmp
+    environment:
+      - FLASK_ENV=production
+
+volumes:
+  wheel-db:

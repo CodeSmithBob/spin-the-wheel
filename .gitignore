@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.db
+*.sqlite3
+wheel_database.db
+.DS_Store
+.env
+venv/
+env/
