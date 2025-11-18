@@ -39,7 +39,6 @@ def init_database():
         print(f"✗ Error initializing database: {e}", flush=True)
         import traceback
         traceback.print_exc()
-        # Don't exit - just log the error
         print("Continuing anyway...", flush=True)
 
 # Initialize database before app creation
@@ -72,7 +71,6 @@ def get_client_ip():
 def get_country_from_ip(ip_address):
     """Get country from IP address using free geolocation API"""
     try:
-        # Using ip-api.com (free, no key required, 45 req/min limit)
         response = requests.get(f'http://ip-api.com/json/{ip_address}', timeout=2)
         if response.status_code == 200:
             data = response.json()
@@ -99,41 +97,31 @@ def track_visit(visit_type='homepage', wheel_id=None):
         print(f"Error tracking visit: {e}")
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    """Homepage - Create new wheel or load existing"""
+    """Homepage - Auto-create new wheel and redirect"""
     track_visit('homepage')
     
-    if request.method == 'POST':
-        names = request.form.getlist('names[]')
-        names = [n.strip() for n in names if n.strip()]
-        
-        if not names:
-            names = DEFAULT_NAMES
-        
-        # Generate unique ID
-        unique_id = str(uuid.uuid4())[:8]
-        
-        # Get creator's country
-        ip_address = get_client_ip()
-        creator_country = get_country_from_ip(ip_address)
-        
-        # Save to database with creator country
-        conn = get_db_connection()
-        conn.execute(
-            'INSERT INTO wheels (unique_id, names, name_count, creator_country) VALUES (?, ?, ?, ?)',
-            (unique_id, json.dumps(names), len(names), creator_country)
-        )
-        conn.commit()
-        conn.close()
-        
-        track_visit('wheel_created', unique_id)
-        
-        # Fixed: use unique_id instead of wheel_id
-        return redirect(url_for('wheel', wheel_id=unique_id))
+    # Auto-create wheel with default names
+    unique_id = str(uuid.uuid4())[:8]
     
-    return render_template('index.html', default_names=DEFAULT_NAMES)
-
+    # Get creator's country
+    ip_address = get_client_ip()
+    creator_country = get_country_from_ip(ip_address)
+    
+    # Save to database
+    conn = get_db_connection()
+    conn.execute(
+        'INSERT INTO wheels (unique_id, names, name_count, creator_country) VALUES (?, ?, ?, ?)',
+        (unique_id, json.dumps(DEFAULT_NAMES), len(DEFAULT_NAMES), creator_country)
+    )
+    conn.commit()
+    conn.close()
+    
+    track_visit('wheel_created', unique_id)
+    
+    # Redirect to new wheel
+    return redirect(url_for('wheel', wheel_id=unique_id))
 
 
 @app.route('/wheel/<wheel_id>', methods=['GET', 'POST'])
