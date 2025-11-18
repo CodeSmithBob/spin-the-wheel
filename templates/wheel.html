@@ -262,7 +262,7 @@
                     💡 Bookmark this page!
                 </div>
                 <div class="url-display">
-                    <div class="url-text" id="wheelUrl">{{ request.url }}</div>
+                    <div class="url-text" id="wheelUrl">{{ request.url | replace('http://', 'https://') }}</div>
                     <button class="copy-btn" onclick="copyUrl()">Copy</button>
                 </div>
             </div>
