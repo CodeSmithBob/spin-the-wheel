@@ -10,9 +10,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy all application files
 COPY . .
 
-# Create data directory and set permissions
-RUN mkdir -p /app/data && chmod -R 777 /app
-
 # Expose port
 EXPOSE 8080
 
