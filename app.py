@@ -243,7 +243,10 @@ def admin():
 
 @app.errorhandler(404)
 def not_found(e):
-    return redirect(url_for('index'))
+    # Only redirect invalid wheel URLs, not everything
+    if request.path.startswith('/wheel/'):
+        return redirect(url_for('index'))
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=False)
