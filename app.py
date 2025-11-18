@@ -69,7 +69,12 @@ def get_client_ip():
     return request.remote_addr
 
 def get_country_from_ip(ip_address):
-    """Get country from IP address using free geolocation API"""
+    # Try Cloudflare header first
+    cf_country = request.headers.get('CF-IPCountry')
+    if cf_country and cf_country not in ['XX', 'T1']:
+        return cf_country
+    
+    # Fallback to ip-api.com
     try:
         response = requests.get(f'http://ip-api.com/json/{ip_address}', timeout=2)
         if response.status_code == 200:
@@ -77,7 +82,9 @@ def get_country_from_ip(ip_address):
             return data.get('country', 'Unknown')
     except:
         pass
+    
     return 'Unknown'
+
 
 def track_visit(visit_type='homepage', wheel_id=None):
     """Track visitor information"""
@@ -103,7 +110,7 @@ def index():
     track_visit('homepage')
     
     # Auto-create wheel with default names
-    unique_id = str(uuid.uuid4())[:8]
+    unique_id = str(uuid.uuid4()).replace('-', '')[:16]
     
     # Get creator's country
     ip_address = get_client_ip()
