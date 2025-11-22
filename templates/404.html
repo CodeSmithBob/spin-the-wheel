@@ -7,7 +7,6 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎡</text></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: 'Montserrat', Arial, sans-serif;
             background: linear-gradient(135deg, #f9a825 0%, #0288d1 100%);
@@ -18,7 +17,6 @@
             text-align: center;
             padding: 20px;
         }
-        
         .container {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 24px;
@@ -27,53 +25,45 @@
             max-width: 600px;
             animation: fadeIn 0.6s ease-out;
         }
-        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
         .emoji {
             font-size: 120px;
             animation: spin 3s ease-in-out infinite;
             display: inline-block;
             margin-bottom: 20px;
         }
-        
         @keyframes spin {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(10deg); }
             75% { transform: rotate(-10deg); }
         }
-        
         h1 {
             font-size: 4em;
             color: #333;
             margin-bottom: 10px;
             font-weight: 900;
         }
-        
         h2 {
             font-size: 1.8em;
             color: #666;
             margin-bottom: 20px;
             font-weight: 600;
         }
-        
         p {
             font-size: 1.2em;
             color: #777;
             margin-bottom: 40px;
             line-height: 1.6;
         }
-        
         .button-group {
             display: flex;
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
         }
-        
         .btn {
             padding: 16px 36px;
             font-size: 18px;
@@ -86,27 +76,14 @@
             transition: all 0.3s;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
         }
-        
         .btn-primary {
             background: linear-gradient(135deg, #ff7043 0%, #8e24aa 100%);
             color: white;
         }
-        
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 24px rgba(142, 36, 170, 0.4);
         }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #2ed573 0%, #26d467 100%);
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(46, 213, 115, 0.4);
-        }
-        
         .fun-fact {
             margin-top: 40px;
             padding: 20px;
@@ -116,13 +93,29 @@
             color: #856404;
             font-size: 1em;
         }
-        
+        /* --- MOBILE STYLES ADDED --- */
+        @media (max-width: 700px) {
+            body {
+                padding: 8px;
+                min-height: 90vh;
+            }
+            .container {
+                padding: 31px 7vw;
+                max-width: 99vw;
+                box-sizing: border-box;
+            }
+            .emoji { font-size: 72px; margin-bottom: 11px; }
+            h1 { font-size: 2.2em; margin-bottom: 6px; }
+            h2 { font-size: 1.09em; margin-bottom: 13px; }
+            p { font-size: 0.99em; margin-bottom: 16px; }
+            .btn { font-size: 1em; padding: 10px 5vw; border-radius: 9px; }
+            .button-group { gap: 9px; }
+            .fun-fact { font-size: 0.96em; margin-top: 23px; padding: 13px; border-radius: 10px; }
+        }
         @media (max-width: 600px) {
-            h1 { font-size: 3em; }
-            h2 { font-size: 1.4em; }
-            p { font-size: 1em; }
-            .emoji { font-size: 80px; }
-            .container { padding: 40px 25px; }
+            .container { padding: 18px 3vw; }
+            .emoji { font-size: 54px; }
+            h1 { font-size: 1.5em; }
         }
     </style>
 </head>
@@ -135,11 +128,9 @@
             The page you're looking for seems to have disappeared into thin air!<br>
             Maybe it was never here, or the wheel of fortune spun it away... 🌀
         </p>
-        
         <div class="button-group">
             <a href="/" class="btn btn-primary">🎯 Create New Wheel</a>
         </div>
-        
         <div class="fun-fact">
             💡 <strong>Fun Fact:</strong> Every time you visit our homepage, you get a brand new wheel with a unique URL. Try it!
         </div>

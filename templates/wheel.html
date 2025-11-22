@@ -17,14 +17,12 @@
             margin: 0;
             padding: 20px;
         }
-        
         h2 {
             color:#fff; 
             text-shadow:0 2px 8px #0288d1,0 0 16px #ffd54f; 
             font-size:2.2em; 
             margin-bottom:20px;
         }
-        
         .main-container {
             display: flex;
             justify-content: center;
@@ -34,20 +32,17 @@
             max-width: 1400px;
             margin: 0 auto;
         }
-        
         .wheel-section {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        
         .wheel-container {
             position: relative;
             width: 600px;
             height: 620px;
             max-width: 90vw;
         }
-        
         #canvas {
             margin: 24px auto 0 auto;
             display: block;
@@ -56,7 +51,6 @@
             background: radial-gradient(circle, #fffde7 0%, #f9a825 100%);
             z-index: 1;
         }
-        
         .pointer {
             position: absolute;
             top: 8px;
@@ -71,7 +65,6 @@
             z-index: 2;
             pointer-events: none;
         }
-        
         .winner-box {
             margin: 24px 0 0 0;
             font-size: 1.5em;
@@ -81,7 +74,6 @@
             letter-spacing: 2px;
             min-height: 2em;
         }
-        
         .home-link {
             display: inline-block;
             margin-top: 18px;
@@ -93,32 +85,27 @@
             border-radius: 8px;
             transition: all 0.3s;
         }
-        
         .home-link:hover {
             background: rgba(255,255,255,0.35);
             transform: translateY(-2px);
         }
-        
         .right-sidebar {
             display: flex;
             flex-direction: column;
             gap: 20px;
             width: 340px;
         }
-        
         .url-box {
             background: rgba(255,255,255,0.98);
             padding: 16px 20px;
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.12);
         }
-        
         .url-box h3 {
             margin: 0 0 8px 0;
             color: #333;
             font-size: 1.1em;
         }
-        
         .bookmark-tip {
             color: #666;
             font-size: 0.85em;
@@ -128,13 +115,11 @@
             border-radius: 6px;
             border-left: 3px solid #f9a825;
         }
-        
         .url-display {
             display: flex;
             gap: 8px;
             align-items: center;
         }
-        
         .url-text {
             flex: 1;
             padding: 10px;
@@ -145,7 +130,6 @@
             word-break: break-all;
             border: 2px solid #e0e0e0;
         }
-        
         .copy-btn {
             padding: 10px 16px;
             background: linear-gradient(135deg, #2ed573 0%, #26d467 100%);
@@ -159,28 +143,23 @@
             box-shadow: 0 3px 10px rgba(46, 213, 115, 0.3);
             white-space: nowrap;
         }
-        
         .copy-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 14px rgba(46, 213, 115, 0.4);
         }
-        
         .copy-btn.copied {
             background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
         }
-        
         .form-box {
             padding: 24px;
             background: rgba(255,255,255,0.95);
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.12);
         }
-        
         .form-box h3 {
             margin-top: 0;
             color: #333;
         }
-        
         button {
             padding: 10px 28px;
             background: linear-gradient(90deg, #ff7043 0%, #8e24aa 100%);
@@ -193,12 +172,10 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.12);
             transition: box-shadow 0.2s;
         }
-        
         button:hover {
             box-shadow: 0 4px 16px rgba(0,0,0,0.18);
             background: linear-gradient(90deg, #ffd54f 0%, #26c6da 100%);
         }
-        
         input {
             margin: 7px;
             padding: 8px;
@@ -207,13 +184,11 @@
             border-radius: 6px;
             font-size: 1em;
         }
-        
         .name-input-group {
             display: flex;
             align-items: center;
             margin-bottom: 8px;
         }
-        
         .remove-btn {
             margin-left: 8px;
             padding: 6px 12px;
@@ -224,7 +199,29 @@
             cursor: pointer;
             font-size: 0.9em;
         }
-        
+        @media (max-width: 700px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 0px;
+            }
+            .wheel-container, #canvas {
+                width: 96vw !important;
+                height: 96vw !important;
+                max-width: 96vw !important;
+                max-height: 96vw !important;
+            }
+            .right-sidebar {
+                width: 98vw;
+                max-width: 100vw;
+                margin-top: 24px;
+            }
+            .form-box, .url-box {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            h2 { font-size: 1.7em; }
+        }
         @media (max-width: 1000px) {
             .main-container {
                 flex-direction: column;
@@ -239,13 +236,12 @@
 </head>
 <body>
     <h2>Spin the Wheel!</h2>
-    
     <div class="main-container">
         <!-- Left: Wheel Section -->
         <div class="wheel-section">
             <div class="wheel-container">
                 <div class="pointer"></div>
-                <canvas id="canvas" width="580" height="580"></canvas>
+                <canvas id="canvas"></canvas>
             </div>
             <div>
                 <button onclick="startSpin()" id="spinBtn">Spin! 🎯</button>
@@ -253,7 +249,6 @@
             <div class="winner-box" id="winner_box"></div>
             <a href="{{ url_for('index') }}" class="home-link">➕ Create New Wheel</a>
         </div>
-        
         <!-- Right: Bookmark + Edit Names -->
         <div class="right-sidebar">
             <div class="url-box">
@@ -266,7 +261,6 @@
                     <button class="copy-btn" onclick="copyUrl()">Copy</button>
                 </div>
             </div>
-            
             <div class="form-box">
                 <h3>Edit Names</h3>
                 <form method="post" id="names-form">
@@ -284,30 +278,41 @@
             </div>
         </div>
     </div>
-
     <script>
         let wheelNames = {{ names|tojson }};
         let wheel = null;
         let wheelSpinning = false;
-        
+        let canvas = document.getElementById('canvas');
         let tickAudio = new Audio('https://soundbible.com/mp3/Button-SoundBible.com-1420500901.mp3');
         let winAudio = new Audio('https://soundbible.com/mp3/Ta Da-SoundBible.com-1884170640.mp3');
-        
         tickAudio.load();
         winAudio.load();
         tickAudio.volume = 0.1;
 
+        // --- MOBILE RESPONSIVE CANVAS ---
+        function resizeCanvas() {
+            if(window.innerWidth < 700) {
+                canvas.width = window.innerWidth * 0.96;
+                canvas.height = window.innerWidth * 0.96;
+            } else {
+                canvas.width = 580;
+                canvas.height = 580;
+            }
+        }
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            makeWheel(wheelNames);
+        });
+        resizeCanvas();
+        // --- END MOBILE FIX ---
+
         function copyUrl() {
             const urlText = document.getElementById('wheelUrl').textContent;
             const btn = event.target;
-            
             navigator.clipboard.writeText(urlText).then(() => {
                 btn.textContent = '✓';
                 btn.classList.add('copied');
-                setTimeout(() => { 
-                    btn.textContent = 'Copy';
-                    btn.classList.remove('copied');
-                }, 2000);
+                setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
             }).catch(() => {
                 const tempInput = document.createElement('input');
                 tempInput.value = urlText;
@@ -327,7 +332,6 @@
                 sound.play().catch(e => console.log('Tick sound blocked:', e));
             } catch(e) {}
         }
-        
         function playWin() {
             try {
                 winAudio.currentTime = 0;
@@ -336,23 +340,23 @@
         }
 
         function makeWheel(names) {
+            // Responsive font size for wheel text (mobile/desktop)
+            let fontSize = window.innerWidth < 700 ? 14 : 22;
             let colors = ['#FFD54F','#F9A825','#0288D1','#26C6DA','#7CB342','#DCE775','#D84315','#FF7043','#8E24AA','#BDBDBD','#5C6BC0'];
             let textColors = ['#000', '#000', '#fff', '#000', '#000', '#000', '#fff', '#fff', '#fff', '#000', '#fff'];
-            
             let segments = names.map(function(n, i) {
                 return {
                     'fillStyle': colors[i % colors.length],
                     'text': n,
                     'textFillStyle': textColors[i % textColors.length],
                     'textFontFamily': 'Arial',
-                    'textFontSize': 22,
+                    'textFontSize': fontSize,
                     'textFontWeight': 'bold',
                     'textOrientation': 'curved',
                     'textAlignment': 'outer',
                     'textDirection': 'normal'
                 };
             });
-            
             wheel = new Winwheel({
                 'canvasId': 'canvas',
                 'numSegments': segments.length,
@@ -372,8 +376,8 @@
                     'fillStyle': '#333',
                     'outerRadius': 5,
                 },
-                'outerRadius': 280,
-                'innerRadius': 45,
+                'outerRadius': canvas.width / 2 - 20,
+                'innerRadius': canvas.width / 13,
             });
         }
 
@@ -396,12 +400,10 @@
             if (wheelSpinning) return;
             wheelSpinning = true;
             document.getElementById("spinBtn").disabled = true;
-            
             tickAudio.play().then(() => {
                 tickAudio.pause();
                 tickAudio.currentTime = 0;
             }).catch(e => {});
-            
             wheel.stopAnimation(false);
             wheel.rotationAngle = 0;
             wheel.draw();

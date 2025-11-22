@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Spin the Wheel</title>
-    <!-- Add this line for favicon -->
+    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎡</text></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -137,6 +137,59 @@
         .wheel-link:hover {
             text-decoration: underline;
         }
+        /* --- MOBILE-FRIENDLY ADDED --- */
+        @media (max-width: 700px) {
+            body {
+                padding: 8px;
+            }
+            .container {
+                max-width: 100vw;
+                margin: 0 auto;
+                padding: 0 2vw;
+            }
+            .login-box, .dashboard {
+                max-width: 97vw;
+                margin: 16px auto;
+                padding: 13px 3vw;
+                box-sizing: border-box;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 9px;
+            }
+            .stat-card {
+                font-size: 1em;
+                padding: 11px;
+            }
+            table {
+                font-size: 0.97em;
+                min-width: 340px;
+                overflow-x: auto;
+            }
+            th, td {
+                padding: 7px;
+            }
+            h1 {
+                font-size: 1.17em;
+                margin-bottom: 13px;
+            }
+            h2 {
+                font-size: 1.11em;
+                margin: 18px 0 11px 0;
+                padding-bottom: 7px;
+            }
+            input[type="password"], button {
+                font-size: 1em;
+            }
+            .names-preview {
+                max-width: 110px;
+                font-size: 0.98em;
+            }
+            .home-link {
+                font-size: 0.99em;
+                margin-top: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -243,8 +296,6 @@
                     {% endif %}
                 </tbody>
             </table>
-
-
             <div class="home-link">
                 <a href="{{ url_for('index') }}">← Back to Home</a>
             </div>
